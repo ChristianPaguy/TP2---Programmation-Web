@@ -1,3 +1,17 @@
+
+/*
+ * ====================================================================
+ * TP2 - Magasin en ligne avec jQuery
+ * Créateurs: Christian Bryan Daryl Djoufack Paguy & Ehouma Kevin Segla
+ * Date: Automne 2025
+ * Cours: 420-355-LI - Programmation Web
+ *
+ * Description:
+ * Application de boutique en ligne permettant d'ajouter des produits
+ * au panier, de gérer les quantités et de passer une commande.
+ * ====================================================================
+ */
+
 $(document).ready(function () {
     //Les variables utiles
     let confirmationDelay = 5000;		//compteur pour confirmer la commande (5s)
@@ -80,7 +94,14 @@ $(document).ready(function () {
             - appelle la méthode pour mettre à jour l'affichage du cart.
          */
 
+        // Afficher les ventes totales
+        $("#depenses-totales").text(ventesTotales.toFixed(2));
 
+        // Afficher tous les produits
+        renderProducts();
+
+        // Mettre à jour l'affichage du panier
+        updateCartDisplay();
 
 
     }
@@ -103,6 +124,16 @@ $(document).ready(function () {
      * Affiche les produits disponibles dans la section centrale de la page.
      */
     function renderProducts() {
+        const container = $("#products-container");
+        container.empty();
+
+        // Parcourir les produits
+        for (let i = 0; i < products.length; i++) {
+            const productHtml = createProduct(products[i]);
+            container.append(productHtml);
+        }
+
+        // Configurer boutons "Ajouter au panier"
 
 
 
