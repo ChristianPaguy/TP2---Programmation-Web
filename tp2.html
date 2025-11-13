@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ma Boutique en ligne</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="css/tp2.css" />
+
+</head>
+<body>
+<header>
+    <div class="container">
+        <div class="header-content">
+            <h1>Ma Boutique en ligne - VotreNom.inc </h1>
+            <div class="cart-icon">
+                <span id="cart-button">🛒</span>
+                <div class="cart-count">0</div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="main-content">
+        <section class="products-section">
+            <h2>Nos produits</h2>
+            <div class="products-grid" id="products-container"></div>
+        </section>
+
+        <section class="cart-section">
+            <h2>Panier d’achat</h2>
+            <div class="cart-items" id="cart-items">
+                <div class="empty-cart">Votre panier est vide</div>
+            </div>
+            <div class="cart-summary">
+                <div class="summary-row">
+                    <span>Sous-total :</span>
+                    <span id="subtotal">0,00 $</span>
+                </div>
+                <div class="summary-row">
+                    <span>Livraison :</span>
+                    <span id="shipping">5,00 $</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total :</span>
+                    <span id="total">5,00 $</span>
+                </div>
+                <button class="checkout-btn" id="checkout-btn">Passer la commande</button>
+            </div>
+        </section>
+
+    </div>
+    <div class="actionBar">Ventes totales du magasin : <span id="depenses-totales">0</span> $ <button id="clear-total">clear</button></div>
+
+</div>
+<div class="order-confirmation" id="order-confirmation">
+    <div class="confirmation-content">
+        <h2>La commande est prête pour un montant de <span id="checkout-price"></span></h2>
+        <p>Appuyez sur confirmer pour passer la commande</p>
+        <p>La commande est valide pour <span id="confirmation-delay">0</span> sec</p>
+
+        <button class="checkout-confirmation" id="checkout-confirmation">Confirmer les achats</button>
+        <button class="cancel-checkout" id="cancel-checkout">Annuler</button>
+
+    </div>
+</div>
+
+
+
+<script src="js/tp2.js"></script>
+</body>
+</html>
