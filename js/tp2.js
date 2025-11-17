@@ -215,7 +215,26 @@ $(document).ready(function () {
      * @returns {{subtotal: number, shipping: number, total: *}}
      */
     function calculatePrices() {
+        let subtotal = 0;
+        let shipping = 0;
+        let total = 0;
 
+        for (let i = 0; i < cart.length; i++) {
+            subtotal += cart[i].price * cart[i].quantite;
+        }
+
+        if (cart.length > 0) {
+            shipping = 5;
+        }
+
+        total = subtotal + shipping;
+
+        return {
+            subtotal: subtotal,
+            shipping: shipping,
+            total: total
+        };
+    }
 
 
 
@@ -254,9 +273,9 @@ $(document).ready(function () {
      * @param prices
      */
     function updatePrice(prices) {
-
-
-
+        $("#subtotal").text(prices.subtotal.toFixed(2) + " $");
+        $("#shipping").text(prices.shipping.toFixed(2) + " $");
+        $("#total").text(prices.total.toFixed(2) + " $");
     }
 	/**
      *     Ajoute ou retire 1 à la quantité du produit sur lequel on vient de cliquer.
@@ -264,10 +283,19 @@ $(document).ready(function () {
      * @param delta + ou - 1
      */
     function changeQuantity(event, delta) {
+        // Récupérer l'ID du produit & trouver le produit dans le panier
+        const productId = $(event.target).data("id");
+        const cartItem = cart.find(item => item.id === productId);
 
+        if (cartItem) {
+            cartItem.quantite += delta;
+            if (cartItem.quantite <= 0) {
+                cart = cart.filter(item => item.id !== productId);
+            }
 
-
-
+            // Mettre à jour l'affichage
+            updateCartDisplay();
+        }
 
     }
 
