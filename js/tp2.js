@@ -1,16 +1,15 @@
-
 /*
- * ====================================================================
- * TP2 - Magasin en ligne avec jQuery
- * Créateurs: Christian Bryan Daryl Djoufack Paguy & Ehouma Kevin Segla
- * Date: Automne 2025
- * Cours: 420-355-LI - Programmation Web
- *
- * Description:
- * Application de boutique en ligne permettant d'ajouter des produits
- * au panier, de gérer les quantités et de passer une commande.
- * ====================================================================
- */
+* ====================================================================
+* TP2 - Magasin en ligne avec jQuery
+* Créateurs: Christian Bryan Daryl Djoufack Paguy & Ehouma Kevin Segla
+* Date: Automne 2025
+* Cours: 420-355-LI - Programmation Web
+*
+* Description:
+* Application de boutique en ligne permettant d'ajouter des produits
+* au panier, de gérer les quantités et de passer une commande.
+* ====================================================================
+*/
 
 $(document).ready(function () {
     //Les variables utiles
@@ -93,7 +92,6 @@ $(document).ready(function () {
             - affiche tous les produits disponibles en appelant la méthode renderProducts
             - appelle la méthode pour mettre à jour l'affichage du cart.
          */
-
         // Afficher les ventes totales
         $("#depenses-totales").text(ventesTotales.toFixed(2));
 
@@ -102,6 +100,7 @@ $(document).ready(function () {
 
         // Mettre à jour l'affichage du panier
         updateCartDisplay();
+
 
 
     }
@@ -145,10 +144,7 @@ $(document).ready(function () {
             localStorage.setItem("ventesTotales", 0);
             $("#depenses-totales").text("0.00");
         });
-
-
     }
-
 
     /**
      * Affiche les produits disponibles dans la section centrale de la page.
@@ -157,20 +153,15 @@ $(document).ready(function () {
         const container = $("#products-container");
         container.empty();
 
-        // Parcourir les produits
         for (let i = 0; i < products.length; i++) {
             const productHtml = createProduct(products[i]);
             container.append(productHtml);
         }
 
-        // Configurer boutons "Ajouter au panier"
         $(".add-to-cart").on("click", function() {
             const productId = $(this).data("id");
             addToCart(productId);
         });
-
-
-
     }
 
     /**
@@ -191,14 +182,9 @@ $(document).ready(function () {
                 ...product,
                 quantite: 1
             });
+        }
 
-    }
-
-
-    /**
-     * Met à jour le nombre d'item dans le cart.
-     */
-    function updateCartCount(){
+        updateCartDisplay();
 
         $(".cart-count")
             .css("transform", "scale(1.5)")
@@ -207,7 +193,19 @@ $(document).ready(function () {
                 $(this).css("transform", "scale(1)");
                 next();
             });
+    }
 
+    /**
+     * Met à jour le nombre d'item dans le cart.
+     */
+    function updateCartCount() {
+        let totalItems = 0;
+
+        for (let i = 0; i < cart.length; i++) {
+            totalItems += cart[i].quantite;
+        }
+
+        $(".cart-count").text(totalItems);
     }
 
     /**
@@ -236,35 +234,37 @@ $(document).ready(function () {
         };
     }
 
-
-
-    }
-
-
     /**
      * Met à jour l'affichage du cart. Elle vous est gracieusement offerte!
      */
     function updateCartDisplay() {
-        const cartContainer = $('#cart-items');
+        const cartContainer = $("#cart-items");
 
-        updateCartCount()
+        updateCartCount();
         actualPrices = calculatePrices();
         updatePrice(actualPrices);
 
         if (cart.length === 0) {
             cartContainer.html('<div class="empty-cart">Votre panier est vide</div>');
-            $('#checkout-btn').prop('disabled', true).css('opacity', '0.6');
+            $("#checkout-btn").prop("disabled", true).css("opacity", "0.6");
         } else {
             cartContainer.empty();
-            $('#checkout-btn').prop('disabled', false).css('opacity', '1');
+            $("#checkout-btn").prop("disabled", false).css("opacity", "1");
 
-            cart.forEach(item => {
-                const itemHtml = createCartItem(item);
+            for (let i = 0; i < cart.length; i++) {
+                const itemHtml = createCartItem(cart[i]);
                 cartContainer.append(itemHtml);
+            }
+
+            $(".decrease").on("click", function(e) {
+                changeQuantity(e, -1);
             });
-            $('.decrease').on('click', e => changeQuantity(e, -1));
-            $('.increase').on('click', e => changeQuantity(e, 1));
-            $('.remove-item').on('click', e => removeItem(e));
+            $(".increase").on("click", function(e) {
+                changeQuantity(e, 1);
+            });
+            $(".remove-item").on("click", function(e) {
+                removeItem(e);
+            });
         }
     }
 
@@ -277,18 +277,24 @@ $(document).ready(function () {
         $("#shipping").text(prices.shipping.toFixed(2) + " $");
         $("#total").text(prices.total.toFixed(2) + " $");
     }
-	/**
+
+    /**
      *     Ajoute ou retire 1 à la quantité du produit sur lequel on vient de cliquer.
      * @param event l'événement
      * @param delta + ou - 1
      */
     function changeQuantity(event, delta) {
-        // Récupérer l'ID du produit & trouver le produit dans le panier
+        // Récupérer l'ID du produit
         const productId = $(event.target).data("id");
+
+        // Trouver le produit dans le panier
         const cartItem = cart.find(item => item.id === productId);
 
         if (cartItem) {
+            // Modifier la quantité
             cartItem.quantite += delta;
+
+            // Si la quantité est 0 ou moins, retirer du panier
             if (cartItem.quantite <= 0) {
                 cart = cart.filter(item => item.id !== productId);
             }
@@ -296,7 +302,6 @@ $(document).ready(function () {
             // Mettre à jour l'affichage
             updateCartDisplay();
         }
-
     }
 
     /**
@@ -321,8 +326,6 @@ $(document).ready(function () {
      * Confirme ou infirme l'achat des produits dans le cart.
      */
     function checkout() {
-
-
         if (cart.length === 0) {
             return;
         }
