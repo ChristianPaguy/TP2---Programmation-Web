@@ -304,14 +304,17 @@ $(document).ready(function () {
      * @param event
      */
     function removeItem(event) {
-
+        const productId = $(event.target).data("id");
+        cart = cart.filter(item => item.id !== productId);
+        updateCartDisplay();
     }
 
     /**
      * Efface le contenu du cart et mets à jour l'affichage de ce dernier.
      */
     function clearCart() {
-
+        cart = [];
+        updateCartDisplay();
     }
 
     /**
@@ -320,10 +323,29 @@ $(document).ready(function () {
     function checkout() {
 
 
+        if (cart.length === 0) {
+            return;
+        }
+
+        $("#checkout-price").text(actualPrices.total.toFixed(2) + " $");
+        $("#order-confirmation").css("display", "flex");
+
+        let tempsRestant = 5;
+        $("#confirmation-delay").text(tempsRestant);
+
+        idCountdown = setInterval(function() {
+            tempsRestant--;
+            $("#confirmation-delay").text(tempsRestant);
+
+            if (tempsRestant <= 0) {
+                clearInterval(idCountdown);
+                clearCart();
+                $("#order-confirmation").fadeOut(500);
+                alert("Commande annulée (temps écoulé)");
+            }
+        }, 1000);
     }
 
-
-
-        initStore();
-		configureButtons();
+    initStore();
+    configureButtons();
 });
