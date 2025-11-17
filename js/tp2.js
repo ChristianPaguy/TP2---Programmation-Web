@@ -273,9 +273,9 @@ $(document).ready(function () {
      * @param prices
      */
     function updatePrice(prices) {
-
-
-
+        $("#subtotal").text(prices.subtotal.toFixed(2) + " $");
+        $("#shipping").text(prices.shipping.toFixed(2) + " $");
+        $("#total").text(prices.total.toFixed(2) + " $");
     }
 	/**
      *     Ajoute ou retire 1 à la quantité du produit sur lequel on vient de cliquer.
