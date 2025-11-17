@@ -164,7 +164,10 @@ $(document).ready(function () {
         }
 
         // Configurer boutons "Ajouter au panier"
-
+        $(".add-to-cart").on("click", function() {
+            const productId = $(this).data("id");
+            addToCart(productId);
+        });
 
 
 
@@ -175,8 +178,19 @@ $(document).ready(function () {
      * @param productId l'id du porduit à ajouter.
      */
     function addToCart(productId) {
+        const product = products.find(p => p.id === productId);
 
+        if (!product) return;
 
+        const cartItem = cart.find(item => item.id === productId);
+
+        if (cartItem) {
+            cartItem.quantite++;
+        } else {
+            cart.push({
+                ...product,
+                quantite: 1
+            });
 
     }
 
@@ -186,7 +200,13 @@ $(document).ready(function () {
      */
     function updateCartCount(){
 
-
+        $(".cart-count")
+            .css("transform", "scale(1.5)")
+            .delay(300)
+            .queue(function(next) {
+                $(this).css("transform", "scale(1)");
+                next();
+            });
 
     }
 
