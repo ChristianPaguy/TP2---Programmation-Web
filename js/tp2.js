@@ -215,7 +215,26 @@ $(document).ready(function () {
      * @returns {{subtotal: number, shipping: number, total: *}}
      */
     function calculatePrices() {
+        let subtotal = 0;
+        let shipping = 0;
+        let total = 0;
 
+        for (let i = 0; i < cart.length; i++) {
+            subtotal += cart[i].price * cart[i].quantite;
+        }
+
+        if (cart.length > 0) {
+            shipping = 5;
+        }
+
+        total = subtotal + shipping;
+
+        return {
+            subtotal: subtotal,
+            shipping: shipping,
+            total: total
+        };
+    }
 
 
 
