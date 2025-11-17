@@ -112,9 +112,39 @@ $(document).ready(function () {
      *
      */
     function configureButtons() {
+        // Bouton "Passer la commande"
+        $("#checkout-btn").on("click", function() {
+            checkout();
+        });
 
+        // Bouton "Confirmer les achats"
+        $("#checkout-confirmation").on("click", function() {
+            clearInterval(idCountdown);
+            ventesTotales += actualPrices.total;
+            $("#depenses-totales").text(ventesTotales.toFixed(2));
+            localStorage.setItem("ventesTotales", ventesTotales);
+            clearCart();
+            $("#order-confirmation").hide();
+        });
 
+        // Bouton "Annuler"
+        $("#cancel-checkout").on("click", function() {
+            clearInterval(idCountdown);
+            clearCart();
+            $("#order-confirmation").hide();
+        });
 
+        // Icône du panier
+        $("#cart-button").on("click", function() {
+            $(".cart-section").toggle(500);
+        });
+
+        // Bouton "Clear"
+        $("#clear-total").on("click", function() {
+            ventesTotales = 0;
+            localStorage.setItem("ventesTotales", 0);
+            $("#depenses-totales").text("0.00");
+        });
 
 
     }
